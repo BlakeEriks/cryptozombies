@@ -1,4 +1,4 @@
-pragma solidity >=0.5.0;
+pragma solidity >=0.5.0 <0.6.0;
 
 import "./zombiefactory.sol";
 
@@ -19,13 +19,19 @@ contract KittyInterface {
 
 contract ZombieFeeding is ZombieFactory {
 
-  // 1. Remove this:
-  // 2. Change this to just a declaration:
   KittyInterface kittyContract;
 
-  // 3. Add setKittyContractAddress method here
   function setKittyContractAddress(address _address) external onlyOwner {
     kittyContract = KittyInterface(_address);
+  }
+
+  // 1. Define `_triggerCooldown` function here
+  function _triggerCooldown(Zombie storage _zombie) internal {
+    _zombie.readyTime = uint32(now + cooldownTime);
+  }
+  // 2. Define `_isReady` function here
+  function _isReady(Zombie storage _zombie) internal view returns (bool) {
+    return (_zombie.readyTime <= now);
   }
 
   function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) public {
