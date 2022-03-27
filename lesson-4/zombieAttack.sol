@@ -15,12 +15,16 @@ contract ZombieAttack is ZombieHelper {
     Zombie storage myZombie = zombies[_zombieId];
     Zombie storage enemyZombie = zombies[_targetId];
     uint rand = randMod(100);
-    // Start here
     if (rand <= attackVictoryProbability) {
       myZombie.winCount++;
       myZombie.level++;
       enemyZombie.lossCount++;
       feedAndMultiply(_zombieId, enemyZombie.dna, "zombie");
+    } // start here
+    else {
+      myZombie.lossCount++;
+      enemyZombie.winCount++;
+      _triggerCooldown(myZombie);
     }
   }
 }
